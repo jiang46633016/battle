@@ -8,5 +8,9 @@
   ],
   "scripts": {
     "dev": "yarn workspace @game/server run dev"
-  }
+  },
+  "creator": {
+    "version": "3.8.1"
+  },
+  "uuid": "290b4b86-f3fa-4550-92eb-c1a773fe3b2c"
 }

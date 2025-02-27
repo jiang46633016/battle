@@ -1,11 +1,15 @@
 import { _decorator, Component, director, Node } from 'cc';
 import DataManager from '../../Global/DataManager';
-import { InputTypeEnum } from '../../Common';
+import { IActor, InputTypeEnum } from '../../Common';
 const { ccclass, property } = _decorator;
 
 @ccclass('ActorMananger')
 export class ActorMananger extends Component {
     start() {
+
+    }
+
+    init(data: IActor) {
 
     }
 
@@ -25,6 +29,10 @@ export class ActorMananger extends Component {
                 DataManager.Instance.state.actors[0].position.y
             )
         }
+    }
+
+    render(data: IActor) {
+        this.node.setPosition(data.position.x, data.position.y);
     }
 }
 
