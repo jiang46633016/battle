@@ -2,11 +2,11 @@
  * @Author: jianghaifeng 466338016@qq.com
  * @Date: 2025-02-24 21:39:53
  * @LastEditors: jianghaifeng 466338016@qq.com
- * @LastEditTime: 2025-02-27 17:24:39
+ * @LastEditTime: 2025-02-28 14:40:45
  * @FilePath: /cocos-nodejs-io-game-start-demo/apps/client/assets/Scripts/Global/DataManager.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { Prefab } from "cc";
+import { Prefab, SpriteFrame } from "cc";
 import Singleton from "../Base/Singleton";
 import { EntityTypeEnum, IActorMove, IState } from "../Common";
 import { ActorMananger } from "../Entity/Actor/ActorMananger";
@@ -22,12 +22,14 @@ export default class DataManager extends Singleton {
   jm: JoyStickMananger
   actorMap: Map<number, ActorMananger> = new Map();
   prefabMap: Map<string, Prefab> = new Map();
+  textureMap: Map<string, SpriteFrame[]> = new Map();
 
   state: IState = {
     actors: [
       {
         id: 1,
         type: EntityTypeEnum.Actor1,
+        weaponType: EntityTypeEnum.Weapon1,
         position: {
           x: 0,
           y: 0

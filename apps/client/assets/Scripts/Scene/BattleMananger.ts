@@ -1,9 +1,9 @@
-import { _decorator, Component, instantiate, Node, Prefab } from 'cc';
+import { _decorator, Component, instantiate, Node, Prefab, SpriteFrame } from 'cc';
 import DataManager from '../Global/DataManager';
 import { JoyStickMananger } from '../UI/JoyStickMananger';
 import { ResourceManager } from '../Global/ResourceManager';
 import { ActorMananger } from '../Entity/Actor/ActorMananger';
-import { PrefabPathEnum } from '../Enum';
+import { PrefabPathEnum, TexturePathEnum } from '../Enum';
 import { EntityTypeEnum } from '../Common';
 const { ccclass, property } = _decorator;
 
@@ -23,10 +23,11 @@ export class BattleMananger extends Component {
 
     async start() {
         await this.loadRes();
+
         this.initMap();
         this.shouldUpdate = true;
     }
-    
+
 
     async loadRes() {
         const list = [];
@@ -36,6 +37,14 @@ export class BattleMananger extends Component {
             })
             list.push(p);
         }
+
+        for (const type in TexturePathEnum) {
+            const p = ResourceManager.Instance.loadDir(TexturePathEnum[type], SpriteFrame).then((spriteFrames) => {
+                DataManager.Instance.textureMap.set(type, spriteFrames);
+            })
+            list.push(p);
+        }
+
         await Promise.all(list);
     }
 
@@ -50,6 +59,19 @@ export class BattleMananger extends Component {
             return;
         }
         this.render();
+        this.tick(deltaTime);
+    }
+
+    tick(dt) {
+        this.tickActor(dt);
+    }
+
+    tickActor(dt) {
+        for (const data of DataManager.Instance.state.actors) {
+            const { id } = data;
+            let am = DataManager.Instance.actorMap.get(id);
+            am.tick(dt);
+        }
     }
 
     render() {
@@ -65,7 +87,7 @@ export class BattleMananger extends Component {
                 const actor = instantiate(prefab);
                 actor.setParent(this.stage);
                 am = actor.addComponent(ActorMananger);
-                DataManager.Instance.actorMap.set(data.id, am); 
+                DataManager.Instance.actorMap.set(data.id, am);
                 am.init(data)
             } else {
                 am.render(data);
